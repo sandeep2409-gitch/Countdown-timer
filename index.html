@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FocusFlow | Premium Pomodoro Timer</title>
+  <meta name="description" content="A gorgeous, customizable Pomodoro timer with native Web Audio synthesis, interactive statistics, and task integration.">
+  
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Flowing Mesh Gradient Backdrop -->
+  <div class="flowing-glow-orb orb-1"></div>
+  <div class="flowing-glow-orb orb-2"></div>
+  
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <h1>FocusFlow</h1>
+      </div>
+      <button class="icon-button" id="open-settings-btn" title="Open Settings" aria-label="Open Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <main class="main-content">
+      <!-- MAIN TIMER CARD -->
+      <section class="timer-section glass-card">
+        <!-- Interactive Phase Tabs -->
+        <div class="phase-selector">
+          <button class="phase-tab active" data-phase="focus">Focus</button>
+          <button class="phase-tab" data-phase="shortBreak">Short Break</button>
+          <button class="phase-tab" data-phase="longBreak">Long Break</button>
+        </div>
+
+        <!-- SVG Circular Ring & Counter -->
+        <div class="timer-circle-container">
+          <svg class="progress-ring" width="320" height="320" viewBox="0 0 320 320">
+            <!-- Background Static Circle -->
+            <circle class="progress-ring__track" cx="160" cy="160" r="142" stroke-width="8"></circle>
+            <!-- Animated Remaining Circle -->
+            <circle class="progress-ring__circle" cx="160" cy="160" r="142" stroke-width="8" stroke-linecap="round"></circle>
+          </svg>
+          
+          <!-- Inside circle info overlay -->
+          <div class="timer-info-overlay">
+            <span class="timer-phase-display" id="current-phase-label">FOCUSING</span>
+            <div class="timer-display" id="time-remaining-text">25:00</div>
+            <div class="active-focus-task" id="active-task-display">No task active</div>
+          </div>
+        </div>
+
+        <!-- Central Play/Pause/Skip Controls -->
+        <div class="timer-controls">
+          <button class="control-btn secondary" id="reset-timer-btn" title="Reset Phase" aria-label="Reset Phase">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+            </svg>
+          </button>
+          
+          <button class="control-btn primary" id="play-pause-btn" title="Start Session" aria-label="Start Session">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="play-icon">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="pause-icon hidden">
+              <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+              <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+            </svg>
+          </button>
+          
+          <button class="control-btn secondary" id="skip-phase-btn" title="Skip Session" aria-label="Skip Session">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 4 15 12 5 20 5 4"></polygon>
+              <line x1="19" y1="5" x2="19" y2="19"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Session Dot Trackers -->
+        <div class="session-tracker" id="session-dot-container" title="Session progress">
+          <!-- Dots will be populated programmatically e.g., 🍅 🍅 🍅 ⚪ -->
+        </div>
+      </section>
+
+      <!-- MICRO TASK CARD -->
+      <section class="task-section glass-card">
+        <div class="section-title-row">
+          <h2>Focus Tasks</h2>
+          <span class="task-stats" id="task-completion-stats">0 completed</span>
+        </div>
+
+        <!-- Active Focus Card -->
+        <div class="active-task-hero" id="active-task-hero">
+          <div class="hero-label">CURRENT TARGET</div>
+          <div class="hero-content">
+            <button class="check-circle-btn" id="hero-complete-btn" title="Mark as Complete">
+              <span class="checkmark">✓</span>
+            </button>
+            <span class="hero-title" id="hero-task-title">Select a task below to start focusing</span>
+            <div class="hero-pom-progress" id="hero-pom-progress"></div>
+          </div>
+        </div>
+
+        <!-- New Task Form -->
+        <form class="task-input-form" id="new-task-form">
+          <input type="text" id="task-input-field" placeholder="What are you focusing on next?" required max="120" autocomplete="off">
+          
+          <div class="target-picker" title="Estimated Pomodoros (25m sessions)">
+            <span class="picker-label">Estimates:</span>
+            <button type="button" class="adjust-btn" id="pom-dec-btn">−</button>
+            <span class="picker-val" id="pom-estimate-val">1</span>
+            <button type="button" class="adjust-btn" id="pom-inc-btn">+</button>
+            <span class="picker-unit">🍅</span>
+          </div>
+
+          <button type="submit" class="add-task-btn" aria-label="Add Task">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="add-icon">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+        </form>
+
+        <!-- Task List Filters -->
+        <div class="task-filters">
+          <button type="button" class="filter-tab active" data-filter="all">All</button>
+          <button type="button" class="filter-tab" data-filter="pending">Pending</button>
+          <button type="button" class="filter-tab" data-filter="done">Completed</button>
+        </div>
+
+        <!-- Task Scrollable List -->
+        <ul class="task-list" id="task-items-list">
+          <!-- Dynamic checklist rows -->
+        </ul>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>FlowTime App &bull; DeepMind Pair Programmed &bull; Keep Flowing</p>
+    </footer>
+  </div>
+
+  <!-- NATIVE GLASSMORPHIC MODAL DIALOG -->
+  <dialog class="settings-modal" id="settings-dialog">
+    <div class="modal-header">
+      <h2>Timer Configuration</h2>
+      <button class="icon-button close-dialog-btn" id="close-settings-btn" title="Close settings" aria-label="Close settings">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <form method="dialog" class="modal-form" id="settings-form">
+      <div class="form-grid">
+        <!-- Interval config -->
+        <div class="input-group">
+          <label for="focus-duration-input">Focus Interval (min)</label>
+          <input type="number" id="focus-duration-input" min="1" max="180" required>
+        </div>
+
+        <div class="input-group">
+          <label for="short-duration-input">Short Break (min)</label>
+          <input type="number" id="short-duration-input" min="1" max="60" required>
+        </div>
+
+        <div class="input-group">
+          <label for="long-duration-input">Long Break (min)</label>
+          <input type="number" id="long-duration-input" min="1" max="120" required>
+        </div>
+
+        <div class="input-group">
+          <label for="long-interval-input">Long Break After</label>
+          <select id="long-interval-input">
+            <option value="2">2 Sessions</option>
+            <option value="3">3 Sessions</option>
+            <option value="4" selected>4 Sessions</option>
+            <option value="5">5 Sessions</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <!-- Web Audio synthesis config -->
+      <div class="audio-section">
+        <h3>Audio Synthesis Settings</h3>
+        
+        <div class="input-row">
+          <label for="sound-preset-select">Alarm Sound Profile</label>
+          <select id="sound-preset-select">
+            <option value="chime">🔔 Meditative Brass Chime (Sine Layered)</option>
+            <option value="digital">⏰ Electronic Alarm (Pulse Square)</option>
+            <option value="none">🔇 Silent (Flash Screen)</option>
+          </select>
+        </div>
+
+        <div class="input-row flex-row">
+          <label for="tick-toggle-checkbox" class="checkbox-label">
+            <input type="checkbox" id="tick-toggle-checkbox" checked>
+            <span class="custom-checkbox"></span>
+            Enable soft focus ticking sound
+          </label>
+        </div>
+
+        <div class="input-row">
+          <div class="volume-container">
+            <label for="volume-control-slider">Sound Volume (<span id="volume-val-display">50%</span>)</label>
+            <div class="slider-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="volume-icon">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+              <input type="range" id="volume-control-slider" min="0" max="1" step="0.05" value="0.5">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <!-- Statistics Dashboard -->
+      <div class="stats-section">
+        <h3>Focus Performance Statistics</h3>
+        <div class="stats-grid">
+          <div class="stats-card">
+            <span class="stats-num" id="total-focus-sessions-count">0</span>
+            <span class="stats-lbl">Total Focus Cycles</span>
+          </div>
+          <div class="stats-card">
+            <span class="stats-num" id="total-focus-minutes-count">0</span>
+            <span class="stats-lbl">Minutes Focused</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn danger" id="reset-stats-btn">Reset All Data & Stats</button>
+        <button type="submit" class="btn primary">Apply Changes</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Core Javascript Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

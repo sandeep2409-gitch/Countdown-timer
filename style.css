@@ -1,0 +1,1197 @@
+/* ==========================================================================
+   FLOWTIME POMODORO TIMER - MODERN DESIGN SYSTEM (VANILLA CSS)
+   ========================================================================== */
+
+/* Design System Foundations */
+:root {
+  /* Common System Colors */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.65);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --glass-bg: rgba(18, 18, 30, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-border-hover: rgba(255, 255, 255, 0.15);
+  --glass-glow: rgba(0, 0, 0, 0.45);
+  --danger-color: #ef4444;
+  --danger-hover: #f87171;
+  --success-color: #10b981;
+  
+  /* Fonts */
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Animations */
+  --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Phase Theme Variables --- */
+body.theme-focus {
+  --bg-gradient-start: #0a050f;
+  --bg-gradient-end: #170707;
+  --accent-color: #ff5f56;
+  --accent-hover: #ff7d75;
+  --accent-glow: rgba(255, 95, 86, 0.3);
+  --orb-1-color: #ff5f56;
+  --orb-2-color: #8b5cf6;
+}
+
+body.theme-shortBreak {
+  --bg-gradient-start: #04090b;
+  --bg-gradient-end: #061811;
+  --accent-color: #10b981;
+  --accent-hover: #34d399;
+  --accent-glow: rgba(16, 185, 129, 0.3);
+  --orb-1-color: #10b981;
+  --orb-2-color: #06b6d4;
+}
+
+body.theme-longBreak {
+  --bg-gradient-start: #040612;
+  --bg-gradient-end: #090e24;
+  --accent-color: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-glow: rgba(59, 130, 246, 0.3);
+  --orb-1-color: #3b82f6;
+  --orb-2-color: #6366f1;
+}
+
+/* Reset and Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: radial-gradient(circle at 50% 50%, var(--bg-gradient-end), var(--bg-gradient-start));
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  position: relative;
+  transition: background 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Flowing Mesh Glow Orbs --- */
+.flowing-glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.15;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  transition: background 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  background: var(--orb-1-color);
+  top: -100px;
+  left: -100px;
+  animation: floatOrb1 25s infinite alternate ease-in-out;
+}
+
+.orb-2 {
+  width: 600px;
+  height: 600px;
+  background: var(--orb-2-color);
+  bottom: -150px;
+  right: -100px;
+  animation: floatOrb2 30s infinite alternate ease-in-out;
+}
+
+@keyframes floatOrb1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(120px, 80px) scale(1.15); }
+  100% { transform: translate(-50px, 150px) scale(0.9); }
+}
+
+@keyframes floatOrb2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-100px, -120px) scale(1.1); }
+  100% { transform: translate(80px, 50px) scale(0.85); }
+}
+
+/* --- Main Layout --- */
+.app-container {
+  width: 100%;
+  max-width: 900px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  z-index: 1;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--accent-color);
+  transition: var(--transition-smooth);
+}
+
+.logo h1 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Generic Icon Button */
+.icon-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.icon-button svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.4s ease;
+}
+
+.icon-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--glass-border-hover);
+  color: var(--accent-color);
+}
+
+.icon-button:hover svg {
+  transform: rotate(30deg);
+}
+
+.icon-button:active {
+  transform: scale(0.95);
+}
+
+/* Main Grid Layout */
+.main-content {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* --- Glassmorphism Card Utility --- */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 32px 64px -16px var(--glass-glow);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transition: border-color 0.8s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.11);
+}
+
+/* ==========================================================================
+   TIMER COMPONENT
+   ========================================================================== */
+
+.timer-section {
+  align-items: center;
+}
+
+/* Phase Tabs selectors */
+.phase-selector {
+  display: flex;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px;
+  border-radius: 14px;
+  gap: 4px;
+}
+
+.phase-tab {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 8px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.phase-tab:hover {
+  color: var(--text-primary);
+}
+
+.phase-tab.active {
+  background: var(--accent-color);
+  color: #000000;
+  font-weight: 600;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+/* SVG Display and Ring */
+.timer-circle-container {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.progress-ring__track {
+  fill: transparent;
+  stroke: rgba(255, 255, 255, 0.03);
+}
+
+.progress-ring__circle {
+  fill: transparent;
+  stroke: var(--accent-color);
+  stroke-dasharray: 892.2; /* 2 * pi * r = 2 * 3.14159 * 142 */
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.4s linear, stroke 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Pulsing outline glow when running */
+body.timer-running .progress-ring__circle {
+  filter: drop-shadow(0 0 8px var(--accent-color));
+}
+
+.timer-info-overlay {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 250px;
+}
+
+.timer-phase-display {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  transition: var(--transition-smooth);
+}
+
+.timer-display {
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -2px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.active-focus-task {
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Controls Bar */
+.timer-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.control-btn {
+  border: 1px solid var(--glass-border);
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: var(--transition-fast);
+}
+
+.control-btn.primary {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  color: #000000;
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.15);
+  border: none;
+}
+
+.control-btn.primary:hover {
+  transform: scale(1.08);
+  box-shadow: 0 16px 40px var(--accent-glow);
+  background: var(--accent-color);
+  color: #000000;
+}
+
+.control-btn.primary svg {
+  width: 24px;
+  height: 24px;
+}
+
+.control-btn.secondary {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+}
+
+.control-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: var(--glass-border-hover);
+  transform: scale(1.05);
+}
+
+.control-btn:active {
+  transform: scale(0.94) !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Dots track tracker */
+.session-tracker {
+  display: flex;
+  gap: 8px;
+  font-size: 16px;
+  margin-top: 4px;
+  min-height: 24px;
+  align-items: center;
+}
+
+.tracker-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  transition: var(--transition-fast);
+}
+
+.tracker-dot.completed {
+  background: var(--accent-color);
+  box-shadow: 0 0 8px var(--accent-color);
+}
+
+.tracker-dot.active {
+  background: var(--text-primary);
+  transform: scale(1.2);
+}
+
+/* ==========================================================================
+   TASK MANAGER COMPONENT
+   ========================================================================== */
+
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.section-title-row h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.task-stats {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Hero Active Focus Task Panel */
+.active-task-hero {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.active-task-hero.focus-active {
+  background: rgba(255, 95, 86, 0.03);
+  border: 1.5px solid var(--accent-color);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.hero-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.check-circle-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-muted);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: transparent;
+  font-size: 12px;
+  transition: var(--transition-fast);
+}
+
+.check-circle-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.hero-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-pom-progress {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* New task Form inputs */
+.task-input-form {
+  display: flex;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--glass-border);
+  padding: 6px;
+  border-radius: 16px;
+  align-items: center;
+}
+
+#task-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  padding: 8px 12px;
+}
+
+#task-input-field::placeholder {
+  color: var(--text-muted);
+}
+
+/* Pomodoro target estimator adjusters */
+.target-picker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px 8px;
+  border-radius: 10px;
+}
+
+.picker-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.adjust-btn {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.adjust-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.picker-val {
+  font-size: 13px;
+  font-weight: 600;
+  width: 14px;
+  text-align: center;
+}
+
+.picker-unit {
+  font-size: 13px;
+}
+
+.add-task-btn {
+  background: var(--text-primary);
+  color: #000000;
+  border: none;
+  outline: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.add-task-btn:hover {
+  background: var(--accent-color);
+  transform: scale(1.04);
+}
+
+.add-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Filter Subtabs */
+.task-filters {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 8px;
+}
+
+.filter-tab {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: var(--transition-fast);
+}
+
+.filter-tab:hover {
+  color: var(--text-primary);
+}
+
+.filter-tab.active {
+  color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Scrollable Task List Rows */
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Modern Scrollbars styling */
+.task-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.task-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}
+
+.task-list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Individual Task Row Item */
+.task-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.task-item.active-focus {
+  border-color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.task-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-muted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: transparent;
+  font-size: 10px;
+  transition: var(--transition-fast);
+}
+
+.task-item:hover .task-checkbox {
+  border-color: var(--accent-color);
+}
+
+.task-item.completed .task-checkbox {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #000000;
+}
+
+.task-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-item.completed .task-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-pom-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.delete-task-btn {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: var(--transition-fast);
+}
+
+.task-item:hover .delete-task-btn {
+  opacity: 1;
+}
+
+.delete-task-btn:hover {
+  color: var(--danger-color);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.delete-task-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Task fade-out slide transition */
+.task-item-leaving {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+/* Empty placeholder */
+.empty-list-placeholder {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 32px 0;
+}
+
+/* ==========================================================================
+   SETTINGS MODAL DIALOG
+   ========================================================================== */
+
+.settings-modal {
+  margin: auto;
+  border: 1px solid var(--glass-border);
+  background: rgba(15, 15, 27, 0.85);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border-radius: 24px;
+  box-shadow: 0 48px 96px rgba(0, 0, 0, 0.6);
+  padding: 28px 32px;
+  width: 90%;
+  max-width: 520px;
+  color: var(--text-primary);
+  outline: none;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.settings-modal[open] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.settings-modal::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close-dialog-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--danger-color);
+}
+
+/* Modal configuration settings fields */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.input-group input,
+.input-group select,
+.input-row select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-row select:focus {
+  border-color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Select arrows reset */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 36px !important;
+  cursor: pointer;
+}
+
+.form-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 4px 0;
+}
+
+/* Audio customization sliders */
+.audio-section h3,
+.stats-section h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.input-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.input-row.flex-row {
+  flex-direction: row;
+  align-items: center;
+  margin-top: 6px;
+}
+
+/* Custom Accessibility Checkbox Toggle */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-checkbox {
+  height: 18px;
+  width: 18px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  position: relative;
+  transition: var(--transition-fast);
+}
+
+.checkbox-label:hover input ~ .custom-checkbox {
+  border-color: var(--accent-color);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.checkbox-label input:checked ~ .custom-checkbox {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.custom-checkbox::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid #000000;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label input:checked ~ .custom-checkbox::after {
+  display: block;
+}
+
+/* Translucent slider ranges */
+.volume-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.volume-container label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.volume-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+}
+
+#volume-control-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.08);
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+#volume-control-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+#volume-control-slider::-webkit-slider-thumb:hover {
+  background: var(--accent-color);
+  transform: scale(1.2);
+}
+
+/* Statistics Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stats-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stats-num {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.stats-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Modal Actions Buttons */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 12px;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 11px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.btn.primary {
+  background: var(--text-primary);
+  color: #000000;
+}
+
+.btn.primary:hover {
+  background: var(--accent-color);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn.danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger-color);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.btn.danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--danger-hover);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================================
+   FOOTER COMPONENT
+   ========================================================================== */
+
+.app-footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 8px 0;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES (RESPONSIVENESS)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .glass-card {
+    padding: 24px;
+  }
+  
+  .timer-circle-container {
+    width: 280px;
+    height: 280px;
+  }
+  
+  .progress-ring {
+    width: 280px;
+    height: 280px;
+    viewBox: 0 0 280 280;
+  }
+  
+  /* Readjust SVGs for 280 radius */
+  .progress-ring__track,
+  .progress-ring__circle {
+    cx: 140;
+    cy: 140;
+    r: 122;
+    stroke-width: 6;
+  }
+  
+  .progress-ring__circle {
+    stroke-dasharray: 766.5; /* 2 * pi * 122 */
+  }
+  
+  .timer-info-overlay {
+    width: 220px;
+  }
+  
+  .timer-display {
+    font-size: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 12px;
+    gap: 16px;
+  }
+  
+  .logo h1 {
+    font-size: 20px;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .modal-actions .btn {
+    width: 100%;
+  }
+  
+  .task-input-form {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+  }
+  
+  .target-picker {
+    justify-content: center;
+    margin: 4px 0;
+  }
+  
+  .add-task-btn {
+    width: 100%;
+  }
+}
