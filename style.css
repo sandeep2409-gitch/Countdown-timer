@@ -314,16 +314,53 @@ body.timer-running .progress-ring__circle {
   transition: var(--transition-smooth);
 }
 
+.timer-display-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
 .timer-display {
   font-family: var(--font-display);
   font-size: 68px;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -2px;
-  margin-bottom: 8px;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
   text-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.adjust-time-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: var(--transition-fast);
+  user-select: none;
+  outline: none;
+}
+
+.adjust-time-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+  transform: scale(1.15);
+}
+
+.adjust-time-btn:active {
+  transform: scale(0.9);
 }
 
 .active-focus-task {

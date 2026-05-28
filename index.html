@@ -58,7 +58,11 @@
           <!-- Inside circle info overlay -->
           <div class="timer-info-overlay">
             <span class="timer-phase-display" id="current-phase-label">FOCUSING</span>
-            <div class="timer-display" id="time-remaining-text">25:00</div>
+            <div class="timer-display-row">
+              <button class="adjust-time-btn decrease" id="time-dec-btn" title="Subtract 1 Minute" aria-label="Subtract 1 Minute">-</button>
+              <div class="timer-display" id="time-remaining-text">25:00</div>
+              <button class="adjust-time-btn increase" id="time-inc-btn" title="Add 1 Minute" aria-label="Add 1 Minute">+</button>
+            </div>
             <div class="active-focus-task" id="active-task-display">No task active</div>
           </div>
         </div>
@@ -91,7 +95,7 @@
 
         <!-- Session Dot Trackers -->
         <div class="session-tracker" id="session-dot-container" title="Session progress">
-          <!-- Dots will be populated programmatically e.g., 🍅 🍅 🍅 ⚪ -->
+          <!-- Dots will be populated programmatically -->
         </div>
       </section>
 
@@ -118,12 +122,12 @@
         <form class="task-input-form" id="new-task-form">
           <input type="text" id="task-input-field" placeholder="What are you focusing on next?" required max="120" autocomplete="off">
           
-          <div class="target-picker" title="Estimated Pomodoros (25m sessions)">
+          <div class="target-picker" title="Estimated Sessions (25m sessions)">
             <span class="picker-label">Estimates:</span>
             <button type="button" class="adjust-btn" id="pom-dec-btn">−</button>
             <span class="picker-val" id="pom-estimate-val">1</span>
             <button type="button" class="adjust-btn" id="pom-inc-btn">+</button>
-            <span class="picker-unit">🍅</span>
+            <span class="picker-unit">sessions</span>
           </div>
 
           <button type="submit" class="add-task-btn" aria-label="Add Task">
@@ -203,9 +207,9 @@
         <div class="input-row">
           <label for="sound-preset-select">Alarm Sound Profile</label>
           <select id="sound-preset-select">
-            <option value="chime">🔔 Meditative Brass Chime (Sine Layered)</option>
-            <option value="digital">⏰ Electronic Alarm (Pulse Square)</option>
-            <option value="none">🔇 Silent (Flash Screen)</option>
+            <option value="chime">Meditative Brass Chime (Sine Layered)</option>
+            <option value="digital">Electronic Alarm (Pulse Square)</option>
+            <option value="none">Silent (Flash Screen)</option>
           </select>
         </div>
 

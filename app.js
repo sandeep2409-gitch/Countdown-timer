@@ -277,6 +277,8 @@ const nodes = {
   pauseIcon: document.querySelector('.pause-icon'),
   skipPhaseBtn: document.getElementById('skip-phase-btn'),
   sessionDotContainer: document.getElementById('session-dot-container'),
+  timeDecBtn: document.getElementById('time-dec-btn'),
+  timeIncBtn: document.getElementById('time-inc-btn'),
   
   // SVG Timer Ring
   progressCircle: document.querySelector('.progress-ring__circle'),
@@ -484,17 +486,14 @@ function updateDocumentTitle() {
   const secs = STATE.timeLeft % 60;
   const text = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   
-  let prefix = '⏱️';
   let phaseText = 'Focus';
   if (STATE.phase === 'shortBreak') {
-    prefix = '🌿';
     phaseText = 'Break';
   } else if (STATE.phase === 'longBreak') {
-    prefix = '🌸';
     phaseText = 'Long Break';
   }
 
-  document.title = `${prefix} ${text} | ${phaseText}`;
+  document.title = `${text} | ${phaseText}`;
 }
 
 /**
@@ -667,7 +666,7 @@ function triggerPhaseTransition() {
 }
 
 /**
- * Renders Pomodoro indicators (e.g. 🍅 🍅 🍅 ⚪)
+ * Renders Pomodoro indicators
  */
 function renderTrackerDots() {
   nodes.sessionDotContainer.innerHTML = '';
@@ -734,7 +733,7 @@ function renderTaskList() {
         ${task.completed ? '✓' : ''}
       </button>
       <span class="task-title">${escapeHTML(task.title)}</span>
-      <span class="task-pom-count">${task.pomCompleted}/${task.pomTarget} 🍅</span>
+      <span class="task-pom-count">${task.pomCompleted}/${task.pomTarget} cycles</span>
       <button class="delete-task-btn" title="Delete Task" aria-label="Delete Task">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="3 6 5 6 21 6"></polyline>
@@ -758,7 +757,7 @@ function syncActiveTaskHero() {
   if (activeTask && !activeTask.completed) {
     nodes.activeTaskHero.classList.add('focus-active');
     nodes.heroTaskTitle.textContent = activeTask.title;
-    nodes.heroPomProgress.textContent = `${activeTask.pomCompleted}/${activeTask.pomTarget} 🍅`;
+    nodes.heroPomProgress.textContent = `${activeTask.pomCompleted}/${activeTask.pomTarget} cycles`;
     nodes.activeTaskDisplay.textContent = `Working on: ${activeTask.title}`;
     nodes.heroCompleteBtn.style.display = 'flex';
   } else {
@@ -1006,6 +1005,36 @@ function resetAllData() {
   window.location.reload();
 }
 
+/**
+ * Adjust active timer value dynamically
+ */
+function adjustActiveTimer(seconds) {
+  audio.init();
+  
+  const newTime = STATE.timeLeft + seconds;
+  if (newTime <= 0) {
+    STATE.timeLeft = 0;
+  } else {
+    STATE.timeLeft = newTime;
+    
+    // Maintain proportional progress circle
+    if (seconds > 0) {
+      STATE.totalDuration += seconds;
+    } else {
+      if (STATE.totalDuration < STATE.timeLeft) {
+        STATE.totalDuration = STATE.timeLeft;
+      }
+    }
+  }
+  
+  // Play soft focus haptic confirmation tick
+  audio.playTick();
+  
+  updateTimerDisplay();
+  updateProgressRing();
+  updateDocumentTitle();
+}
+
 // ==========================================================================
 // SYSTEM EVENT LISTENERS SETUP
 // ==========================================================================
@@ -1027,6 +1056,8 @@ function setupEventListeners() {
   nodes.playPauseBtn.addEventListener('click', toggleTimer);
   nodes.resetTimerBtn.addEventListener('click', resetTimer);
   nodes.skipPhaseBtn.addEventListener('click', skipPhase);
+  nodes.timeDecBtn.addEventListener('click', () => adjustActiveTimer(-60));
+  nodes.timeIncBtn.addEventListener('click', () => adjustActiveTimer(60));
 
   // Focus Task inputs and plus/minus clicks
   nodes.newTaskForm.addEventListener('submit', handleAddTask);
